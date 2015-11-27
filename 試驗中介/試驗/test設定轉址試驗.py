@@ -52,7 +52,6 @@ class 設定轉址試驗(TestCase):
         self.assertEqual(回應.status_code, 302)
         self.assertEqual(回應.url, 'http://i3thuan5.tw/bang7tsi2')
 
-
     def test_網域轉punycode(self):
         self.client.post(
             '/試驗中介',
