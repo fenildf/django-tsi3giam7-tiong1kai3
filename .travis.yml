@@ -1,22 +1,30 @@
 sudo: false
 language: python
 python:
- - "3.4"
- - "3.5"
+- '3.4'
+- '3.5'
 env:
-  global:
-  matrix:
+  global: 
+  matrix: 
 install:
- - pip install django
- - pip install flake8
- - pip install python-coveralls
+- pip install django
+- pip install flake8
+- pip install python-coveralls
 branches:
- only:
+  only:
   - master
 script:
- - coverage run --source=試驗中介 manage.py test
- - flake8 .
-matrix:
+- coverage run --source=試驗中介 manage.py test
+- flake8 .
+matrix: 
 after_success:
-  - coverage report
-  - coveralls
+- coverage report
+- coveralls
+deploy:
+  provider: pypi
+  user: sih4sing5hong5
+  password:
+    secure: kUqz/Y9HPgq/rR3vTMICfQTQUyzYklxBTdZ4Cl0j8maOKoVdAkeEq7JCUSh5ZegwBo2iicDuz1BOTheGUskWDNdEWYNg62F6O42sitCpZF5MfIz5QMweKk8hFJRYqQ3+reWJViebcagdkOlv14SNewc2Ug9lnBczbURhv4m8ooQjafb88u/UIAyLB1QUwrzewaoYao7MJC5FpML4niFoSJBtcF8s/KXnLsIcqspGnvkLD+BwxDMgJc7ixT9y+b+w5G5fFg/qGpRR/xuM20bh8hDUARJjtSCn6Qu+TYGmcFnL71RExEORItl0GeEIDkst937kod+YlWEn2L3cHhrNFHPSkkWSUK2NlgurRGq0yJ7a6kJY4inBaIKTp3+Gb87spspYpZu8txtexihxjfhfpxmm5QX0+QniXBKTI7MmacuvydtZzYIeAi9C2f6J3bIhPEP4lDqZwb7Mh634IxSILobZDfDrRMxmMDaULYt/VH7NalT1kOVupoheU9ZBa+cF/wAMSG+al1a3kHbpDreHoS6x9JPGC+RCVXB8HthBh0W0WV9caDGmz8A8uW7u56rYQsCeW3aW3xQePAPn0QXkvQbqaGOzrXYS/7IXvcgxsavdMvgVDC/ZNTNz9tZR1N4vVQWXLvYwcMl1/t+G+KHxeTUhgUJW+qI5sgvefO7czWk=
+  on:
+    tags: true
+    repo: sih4sing5hong5/django-tsi3giam7-tiong1kai3
