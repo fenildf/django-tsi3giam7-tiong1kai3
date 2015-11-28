@@ -52,7 +52,7 @@ MIDDLEWARE_CLASSES = (
     '試驗中介.轉址佮設定資料.轉址佮設定資料'
 )
 
-ROOT_URLCONF = '試驗中介.網址'
+ROOT_URLCONF = '試驗網址'
 
 TEMPLATES = [
     {

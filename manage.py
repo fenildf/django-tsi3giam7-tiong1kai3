@@ -3,7 +3,7 @@ import os
 import sys
 
 if __name__ == "__main__":
-    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "tsi3giam7_siat4ting7")
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "試驗設定")
 
     from django.core.management import execute_from_command_line
 

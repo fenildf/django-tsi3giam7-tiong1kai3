@@ -3,7 +3,7 @@
 python setup.py sdist upload
 '''
 from distutils.core import setup
-from 版本 import 版本
+from 試驗中介.版本 import 版本
 
 _專案說明 = '''
 提供前端開發時的功能試驗佮系統試驗的django後端中介軟體
