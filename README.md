@@ -5,5 +5,24 @@
 
 用來處理echo server佮實際django程式的套件
 
+## 使用
+### 設定
+佇`settings.py`
+```python
+MIDDLEWARE_CLASSES += (
+    '試驗中介.轉址佮設定資料.轉址佮設定資料',
+)
+```
+
+### 連線
+任何`POST`連線，參數有
+```python
+{
+    '模式': '轉址',
+    '網域': 'http://意傳.台灣',
+}
+```
+
+
 ## 授權
 本軟體採用MIT授權

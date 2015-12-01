@@ -1,4 +1,5 @@
 import json
+from unittest.mock import patch
 
 from django.test.testcases import TestCase
 
@@ -20,7 +21,8 @@ class 設定轉址試驗(TestCase):
             '結果': '成功',
         })
 
-    def test_get轉址(self):
+    @patch('http.client.HTTPConnection')
+    def test_有轉址(self, httpMock):
         self.client.post(
             '/試驗中介',
             {
@@ -28,15 +30,14 @@ class 設定轉址試驗(TestCase):
                 '網域': 'http://i3thuan5.tw',
             }
         )
-        回應 = self.client.get(
+        self.client.get(
             '/bang7tsi2',
             {'欄位': '內容'}
         )
+        httpMock.assert_called_once_with('i3thuan5.tw')
 
-        self.assertEqual(回應.status_code, 302)
-        self.assertEqual(回應.url, 'http://i3thuan5.tw/bang7tsi2')
-
-    def test_post轉址(self):
+    @patch('http.client.HTTPConnection')
+    def test_get轉址(self, httpMock):
         self.client.post(
             '/試驗中介',
             {
@@ -44,15 +45,47 @@ class 設定轉址試驗(TestCase):
                 '網域': 'http://i3thuan5.tw',
             }
         )
-        回應 = self.client.post(
+        self.client.get('/bang7tsi2')
+        httpMock.return_value.request.assert_called_once_with(
+            'GET', '/bang7tsi2'
+        )
+
+    @patch('http.client.HTTPConnection')
+    def test_get轉址敆參數(self, httpMock):
+        self.client.post(
+            '/試驗中介',
+            {
+                '模式': '轉址',
+                '網域': 'http://i3thuan5.tw',
+            }
+        )
+        self.client.get(
             '/bang7tsi2',
             {'欄位': '內容'}
         )
+        httpMock.return_value.request.assert_called_once_with(
+            'GET', '/bang7tsi2?%E6%AC%84%E4%BD%8D=%E5%85%A7%E5%AE%B9'
+        )
 
-        self.assertEqual(回應.status_code, 302)
-        self.assertEqual(回應.url, 'http://i3thuan5.tw/bang7tsi2')
+    @patch('http.client.HTTPConnection')
+    def test_post轉址敆參數(self, httpMock):
+        self.client.post(
+            '/試驗中介',
+            {
+                '模式': '轉址',
+                '網域': 'http://i3thuan5.tw',
+            }
+        )
+        self.client.post(
+            '/bang7tsi2',
+            {'欄位': '內容'}
+        )
+        httpMock.return_value.request.assert_called_once_with(
+            'POST', '/bang7tsi2', json.dumps({'欄位': '內容'}).encode()
+        )
 
-    def test_網域轉punycode(self):
+    @patch('http.client.HTTPConnection')
+    def test_網域轉punycode(self, httpMock):
         self.client.post(
             '/試驗中介',
             {
@@ -60,15 +93,11 @@ class 設定轉址試驗(TestCase):
                 '網域': 'http://意傳.台灣',
             }
         )
-        回應 = self.client.get(
-            '/bang7tsi2',
-            {'欄位': '內容'}
-        )
+        self.client.get('/bang7tsi2')
+        httpMock.assert_called_once_with('xn--v0qr21b.xn--kpry57d')
 
-        self.assertEqual(回應.status_code, 302)
-        self.assertEqual(回應.url, 'http://xn--v0qr21b.xn--kpry57d/bang7tsi2')
-
-    def test_路徑愛跳脫(self):
+    @patch('http.client.HTTPConnection')
+    def test_路徑愛跳脫(self, httpMock):
         self.client.post(
             '/試驗中介',
             {
@@ -76,10 +105,19 @@ class 設定轉址試驗(TestCase):
                 '網域': 'http://i3thuan5.tw',
             }
         )
-        回應 = self.client.get(
-            '/網址',
-            {'欄位': '內容'}
+        self.client.get('/網址')
+        httpMock.return_value.request.assert_called_once_with(
+            'GET', '/%E7%B6%B2%E5%9D%80'
         )
 
-        self.assertEqual(回應.status_code, 302)
-        self.assertEqual(回應.url, 'http://i3thuan5.tw/%E7%B6%B2%E5%9D%80')
+    @patch('http.client.HTTPSConnection')
+    def test_https轉址(self, httpsMock):
+        self.client.post(
+            '/試驗中介',
+            {
+                '模式': '轉址',
+                '網域': 'https://i3thuan5.tw',
+            }
+        )
+        self.client.get('/bang7tsi2')
+        httpsMock.assert_called_once_with('i3thuan5.tw')
